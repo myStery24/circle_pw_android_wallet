@@ -154,7 +154,17 @@ class SendTokenActivity: AppCompatActivity() {
                 //api call
                 GlobalScope.launch(Dispatchers.IO) {
                     //Step 6 - PASTE CODE HERE FOR "SEND TOKEN" API
-
+                    val client = OkHttpClient()
+                    val mediaType = "application/json".toMediaTypeOrNull()
+                    val body = "{\"amounts\":[\"$tokenAmountInput\"],\"destinationAddress\":\"${recipientWalletAddress}\",\"idempotencyKey\":\"${uuid}\",\"feeLevel\":\"MEDIUM\",\"tokenId\":\"${apiCallTokenId}\",\"walletId\":\"${walletId}\"}".toRequestBody(mediaType)
+                    val request = Request.Builder()
+                        .url("https://api.circle.com/v1/w3s/user/transactions/transfer")
+                        .post(body)
+                        .addHeader("accept", "application/json")
+                        .addHeader("X-User-Token", "$userToken")
+                        .addHeader("content-type", "application/json")
+                        .addHeader("authorization", "Bearer $apiKey")
+                        .build()
 
                     try {
                         val response = client.newCall(request).execute()

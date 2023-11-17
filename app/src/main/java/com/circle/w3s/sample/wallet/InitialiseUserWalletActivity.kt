@@ -51,7 +51,17 @@ class InitialiseUserWalletActivity  : AppCompatActivity()  {
         //call api to initialize the User's Account and Acquire the Challenge ID to create wallet
         GlobalScope.launch(Dispatchers.IO) {
             //Step 5 - PASTE CODE HERE FOR "CREATE WALLET" API
-
+            val client = OkHttpClient()
+            val mediaType = "application/json".toMediaTypeOrNull()
+            val body = "{\"blockchains\":[\"AVAX-FUJI\"],\"idempotencyKey\":\"$uuid\"}".toRequestBody(mediaType)
+            val request = Request.Builder()
+                .url("https://api.circle.com/v1/w3s/user/initialize")
+                .post(body)
+                .addHeader("accept", "application/json")
+                .addHeader("X-User-Token", "$userToken")
+                .addHeader("content-type", "application/json")
+                .addHeader("authorization", "Bearer $apiKey")
+                .build()
 
             try {
                 val response = client.newCall(request).execute()

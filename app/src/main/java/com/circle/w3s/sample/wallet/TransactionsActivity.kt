@@ -118,6 +118,13 @@ class TransactionsActivity: AppCompatActivity()  {
         //call API to get transaction data
         GlobalScope.launch(Dispatchers.IO) {
             //Step 7 - PASTE CODE HERE FOR "FETCH TRANSACTIONS" API
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url("https://api.circle.com/v1/w3s/transactions?blockchain=AVAX-FUJI&userId=$userId&pageSize=10")
+                .get()
+                .addHeader("accept", "application/json")
+                .addHeader("authorization", "Bearer $apiKey")
+                .build()
 
             try {
                 val response = client.newCall(request).execute()
