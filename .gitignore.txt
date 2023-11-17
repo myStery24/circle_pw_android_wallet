@@ -3,4 +3,5 @@
 .idea
 
 # Ignore files
+/local.properties
 local.properties
